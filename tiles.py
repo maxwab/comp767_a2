@@ -32,12 +32,13 @@ def encode(obs, tiles_intervals):
     '''
     
     pos_, vel_ = np.split(angles.prep(obs), 2, axis=1) # Normalizing observation(s)
-
-    feat = np.empty((obs.shape[0], 0))
+    feat = []
     for inter_pos, inter_vel in tiles_intervals:
         idx_pos = np.digitize(pos_, inter_pos) - 1 # Get the bin
         idx_vel = np.digitize(vel_, inter_vel) - 1
         idx = np.ravel_multi_index((idx_pos, idx_vel), (len(inter_pos), len(inter_vel))).squeeze().reshape(-1, 1)
-        feat = np.concatenate((feat, idx), axis=1)
+        z = np.zeros((len(inter_pos)**2,)).astype(int)
+        z[idx] = 1
+        feat.append(z)
 
-    return feat
+    return np.concatenate(feat, 0)
