@@ -51,8 +51,11 @@ SEED = args.seed
 # Creating the directory if it does not exist
 p_exp_l = exp_path / 'l:{}'.format(LAMBDA)
 if not Path.exists(p_exp_l):
-    os.makedirs(p_exp_l)
-    print('Experiment {} created'.format(p_exp_l))
+    try:
+        os.makedirs(p_exp_l)
+        print('Experiment {} created'.format(p_exp_l))
+    except FileExistsError:
+        pass
 
 np.random.seed(SEED)
 random.seed(SEED)
