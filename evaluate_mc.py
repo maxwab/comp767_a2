@@ -102,6 +102,7 @@ for _ in tqdm(range(N_EPISODES)):
     lw.append(w)
     lphi0.append(v(phi_0, w))
 
+import pdb; pdb.set_trace()
 # --------------------------------------------------------------------------------
 # Logging
 # --------------------------------------------------------------------------------
@@ -115,5 +116,5 @@ with open(p_exp_mc / filename_W, 'wb') as fd:
     print('Saved weights for alpha={}, seed={} at location {}'.format(ALPHA, SEED, p_exp_mc / filename_W))
 
 with open(p_exp_mc / filename_phi, 'wb') as fd:
-    np.save(fd, np.array(lphi)) 
+    np.save(fd, np.array(lphi0)) 
     print('Saved phi values for alpha={}, seed={} at location {}'.format(ALPHA, SEED, p_exp_mc / filename_phi))
