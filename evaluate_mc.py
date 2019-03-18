@@ -29,7 +29,7 @@ env = ResetableEnv(base_env)
 # Initialisation of the hyperparameters
 LEN_EPISODE = 200 # The task is non-episodic so we define the len of an episode as 200 (like openAI gym)
 N_EPISODES = 200
-GAMMA = .9
+GAMMA = .95
 N_TILES = 5
 N_BINS = 10
 
