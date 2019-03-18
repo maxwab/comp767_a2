@@ -20,7 +20,7 @@ parser.add_argument('--lambda_', type=float, required=True)
 parser.add_argument('--alpha', type=float, required=True)
 parser.add_argument('--seed', type=int, required=True)
 parser.add_argument('--save_dir', type=str, required=True)
-
+parser.add_argument('--torque_value', type=float, default=1.0)
 args = parser.parse_args()
 
 # Creating the environment. We wrap it so that we always reset to (0.0, 0.0)
@@ -82,7 +82,7 @@ lphi = []
 for _ in tqdm(range(N_EPISODES)):
     obs = env.reset().reshape(1, -1)
     for i in range(LEN_EPISODE):
-        action = policy.policy(obs)
+        action = policy.policy(obs, torque_value=args.torque_value)
         phi = tiles.encode(obs, tiles_intervals)
         next_obs, rew, done, _ = env.renv.step(action)
         next_obs = next_obs.reshape(1, -1)

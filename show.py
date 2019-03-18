@@ -29,10 +29,12 @@ for l in lambdas:
         phis_m = phis.mean(1)
         plt.plot(phis_m, label=r'$\alpha$ = {}'.format(a))
     plt.legend()
-
+    plt.xlabel(r'\# episodes')
+    plt.ylabel(r'$\hat{V}(0.0, 0.0)$')
+    plt.title(r'$\lambda$ = {}'.format(l))
+    plt.tight_layout()
     path_fig = p / 'fig'
     if not Path.exists(path_fig):
         os.makedirs(path_fig)
-    plt.title(r'$\lambda$ = {}'.format(l))
     plt.savefig(path_fig / 'fig_l:{}.pdf'.format(l))
     plt.close()

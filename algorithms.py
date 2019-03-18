@@ -33,6 +33,7 @@ def update_mc(w, phi, ret, v, grad_v_w, alpha_):
     alpha_: (float) learning rate
     '''
     grad_ = grad_v_w(phi, w)
-    w = w + alpha_ * (ret - v(phi, w)) * grad_
+    error = (ret - v(phi, w))
+    w = w + alpha_ * error * grad_
     return w
     

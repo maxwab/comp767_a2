@@ -19,7 +19,7 @@ parser = ap.ArgumentParser()
 parser.add_argument('--alpha', type=float, required=True)
 parser.add_argument('--seed', type=int, required=True)
 parser.add_argument('--save_dir', type=str, required=True)
-
+parser.add_argument('--torque_value', type=float, default=1.0)
 args = parser.parse_args()
 
 # Creating the environment. We wrap it so that we always reset to (0.0, 0.0)
@@ -29,7 +29,7 @@ env = ResetableEnv(base_env)
 # Initialisation of the hyperparameters
 LEN_EPISODE = 200 # The task is non-episodic so we define the len of an episode as 200 (like openAI gym)
 N_EPISODES = 200
-GAMMA = .95
+GAMMA = .9
 N_TILES = 5
 N_BINS = 10
 
@@ -85,7 +85,7 @@ for _ in tqdm(range(N_EPISODES)):
     
     # During the episode we store the states we visit and the rewards we get.
     for i in range(LEN_EPISODE):
-        action = policy.policy(obs)
+        action = policy.policy(obs, torque_value=args.torque_value)
         phi = tiles.encode(obs, tiles_intervals)
         lphi.append(phi)
         next_obs, rew, done, _ = env.renv.step(action)
@@ -95,14 +95,13 @@ for _ in tqdm(range(N_EPISODES)):
 
     # Now we update the weights for each transition
     for t in reversed(range(LEN_EPISODE)):
-        G += GAMMA * G + lrew[t]
-        w = algorithms.update_mc(w, lphi[t], G, v, g, ALPHA)
+        G = GAMMA * G + lrew[t]
+        w = algorithms.update_mc(w, lphi[t], G, v, g, alpha)
 
     # Logging
     lw.append(w)
     lphi0.append(v(phi_0, w))
 
-import pdb; pdb.set_trace()
 # --------------------------------------------------------------------------------
 # Logging
 # --------------------------------------------------------------------------------
